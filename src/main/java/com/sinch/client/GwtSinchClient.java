@@ -33,20 +33,16 @@ public class GwtSinchClient {
     public static native boolean isLoaded() /*-{
         return $wnd.sinchClient !== undefined;
     }-*/;
-    public static void init(String applicationKey, Capabilities capabilities,
-                            Boolean supportActiveConnection, Boolean startActiveConnection,
-                            JsFunction onLogMessage) {
+    public static void load() {
         if (!isLoaded()) {
             GwtSinchClientResources resources = GWT.create(GwtSinchClientResources.class);
             ScriptInjector.fromString(resources.js().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
         }
-        Window.alert(stringify(capabilities));
-        initJs(applicationKey, capabilities, supportActiveConnection, startActiveConnection);
     }
-    protected static native void initJs(String applicationKey, Capabilities capabilities,
+    public static native void init(String applicationKey, Capabilities capabilities,
                                    Boolean supportActiveConnection, Boolean startActiveConnection,
                                    JsFunction onLogMessage)/*-{
-        $wnd.sinchClient = new SinchClient({
+        $wnd.sinchClient = new $wnd.SinchClient({
             applicationKey: applicationKey,
             capabilities: capabilities,
             supportActiveConnection : supportActiveConnection,
@@ -55,7 +51,7 @@ public class GwtSinchClient {
             onLogMessage: onLogMessage
         });
     }-*/;
-    protected static native void initJs(String applicationKey, Capabilities capabilities,
+    public static native void init(String applicationKey, Capabilities capabilities,
                                         Boolean supportActiveConnection, Boolean startActiveConnection)/*-{
         $wnd.sinchClient = new $wnd.SinchClient({
             applicationKey: applicationKey,
@@ -67,15 +63,56 @@ public class GwtSinchClient {
     public static native void start(SessionObject sessionObject, JsFunction handleSuccess, JsFunction handleFailure) /*-{
         $wnd.sinchClient.start(sessionObject, handleSuccess, handleFailure);
     }-*/;
-    public static native void start(LoginObject loginObject, Callback<JavaScriptObject> callback) /*-{
-        var handleError = function(error) {
+    public static native void start(SessionObject sessionObject, Callback<JavaScriptObject> callback) /*-{
+        var handleFailure = function(error) {
             @com.sinch.client.GwtSinchClient::callbackFailure(*)(callback, error);
         }
         var handleSuccess = function(success) {
             @com.sinch.client.GwtSinchClient::callbackSuccess(*)(callback, success);
         }
-        $wnd.sinchClient.start(loginObject, handleSuccess).fail(handleError);
+        $wnd.sinchClient.start(sessionObject, handleSuccess, handleFailure);
     }-*/;
+    public static native void start(LoginObject loginObject, Callback<JavaScriptObject> callback) /*-{
+        var handleFailure = function(error) {
+            @com.sinch.client.GwtSinchClient::callbackFailure(*)(callback, error);
+        }
+        var handleSuccess = function(success) {
+            @com.sinch.client.GwtSinchClient::callbackSuccess(*)(callback, success);
+        }
+        $wnd.sinchClient.start(loginObject, handleSuccess).fail(handleFailure);
+    }-*/;
+
+    public static native void start(SignupObject signupObject, Callback<JavaScriptObject> callback) /*-{
+        var handleFailure = function(error) {
+            @com.sinch.client.GwtSinchClient::callbackFailure(*)(callback, error);
+        }
+        var handleSuccess = function(success) {
+            @com.sinch.client.GwtSinchClient::callbackSuccess(*)(callback, success);
+        }
+        $wnd.sinchClient.start(signupObject, handleSuccess, handleFailure);
+    }-*/;
+    public static native void start(String authTicket, Callback<JavaScriptObject> callback) /*-{
+        var handleFailure = function(error) {
+            @com.sinch.client.GwtSinchClient::callbackFailure(*)(callback, error);
+        }
+        var handleSuccess = function(success) {
+            @com.sinch.client.GwtSinchClient::callbackSuccess(*)(callback, success);
+        }
+        $wnd.sinchClient.start(authTicket, handleSuccess, handleFailure);
+    }-*/;
+    public static native void newUser(JavaScriptObject signUpObj, Callback<JavaScriptObject> callback) /*-{
+        var handleFailure = function(error) {
+            @com.sinch.client.GwtSinchClient::callbackFailure(*)(callback, error);
+        }
+        var handleSuccess = function(success) {
+            @com.sinch.client.GwtSinchClient::callbackSuccess(*)(callback, success);
+        }
+        $wnd.sinchClient.newUser(signUpObj, handleSuccess, handleFailure);
+    }-*/;
+
+
+
+
     public static native void start(SignupObject signupObject, JsFunction handleSuccess, JsFunction handleFailure) /*-{
         $wnd.sinchClient.start(signupObject, handleSuccess, handleFailure);
     }-*/;

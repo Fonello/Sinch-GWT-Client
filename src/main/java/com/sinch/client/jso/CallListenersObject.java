@@ -23,9 +23,9 @@ package com.sinch.client.jso;
 import com.google.gwt.core.client.JavaScriptObject;
 import jsfunction.gwt.JsFunction;
 
-public class CallListeners extends JavaScriptObject {
-    protected CallListeners() {}
-    public static native CallListeners newInstance() /*-{
+public class CallListenersObject extends JavaScriptObject {
+    protected CallListenersObject() {}
+    public static native CallListenersObject newInstance() /*-{
         return {};
     }-*/;
     public final native void setOnCallProgressing(JsFunction onCallProgressing) /*-{

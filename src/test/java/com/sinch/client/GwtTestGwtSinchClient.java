@@ -23,10 +23,7 @@ package com.sinch.client;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.Window;
-import com.sinch.client.jso.Callback;
-import com.sinch.client.jso.Capabilities;
-import com.sinch.client.jso.LoginObject;
-import com.sinch.client.jso.SessionObject;
+import com.sinch.client.jso.*;
 
 public class GwtTestGwtSinchClient extends GWTTestCase {
 
@@ -48,12 +45,19 @@ public class GwtTestGwtSinchClient extends GWTTestCase {
         Capabilities capabilities = Capabilities.newInstance();
         capabilities.setCalling(true);
         capabilities.setMessaging(false);
-    GwtSinchClient.init(APPLICATION_KEY,
-        capabilities,
-        false,
-        false,
-        null);
-        finishTest();
+
+
+        GwtSinchClient.load();
+        GwtSinchClient.init(APPLICATION_KEY,
+                    capabilities,
+                    false,
+                    false,
+                    null);
+            finishTest();
+        if(GwtSinchClient.isLoaded()) {
+
+        }
+
     }
 
     public void testGetSession() {
@@ -61,6 +65,10 @@ public class GwtTestGwtSinchClient extends GWTTestCase {
         Capabilities capabilities = Capabilities.newInstance();
         capabilities.setCalling(true);
         capabilities.setMessaging(false);
+        GwtSinchClient.load();
+        if(GwtSinchClient.isLoaded()) {
+
+        }
         GwtSinchClient.init(
                 APPLICATION_KEY,
                 capabilities,
@@ -90,4 +98,44 @@ public class GwtTestGwtSinchClient extends GWTTestCase {
 
     }
 
+    public void testCallPhone() {
+        delayTestFinish(DELAY_TIMEOUT);
+        GwtSinchClient.load();
+        if(GwtSinchClient.isLoaded()) {
+
+        }
+        Capabilities capabilities = Capabilities.newInstance();
+        capabilities.setCalling(true);
+        capabilities.setMessaging(false);
+        GwtSinchClient.init(
+                APPLICATION_KEY,
+                capabilities,
+                false,
+                false,
+                null);
+        LoginObject loginObject = LoginObject.newInstance();
+        loginObject.setUsername("asdf");
+        loginObject.setPassword("asdfasdf");
+        GwtSinchClient.start(loginObject, new Callback<JavaScriptObject>() {
+            @Override
+            public void success(JavaScriptObject jso) {
+                Window.alert(GwtSinchClient.stringify(jso));
+                SessionObject session = GwtSinchClient.getSession();
+                CallClient callClient = GwtSinchClient.getCallClient();
+                Window.alert("Session:         " + GwtSinchClient.stringify(session));
+                Window.alert("Session ID:      " + session.getSessionId());
+                Window.alert("Session Secret:  " + session.getSessionSecret());
+                Window.alert("Session User ID: " + session.getUserId());
+                Window.alert("Calling phone...");
+                assertNotNull(callClient);
+                callClient.callPhoneNumber("+639322930904");
+                finishTest();
+            }
+            @Override
+            public void failure(JavaScriptObject jso) {
+                fail();
+            }
+        });
+
+    }
 }
