@@ -31,22 +31,18 @@ public class CallClient extends JavaScriptObject {
     public final native void initStream(NoArgsFunction noArgsFunction) /*-{
         this.initStream.then(noArgsFunction);
     }-*/;
-    public final native void callPhoneNumber(String phoneNumber) /*-{
-        this.callPhoneNumber(phoneNumber);
+    public final native void initStream(Function func) /*-{
+        var handler = function() { // Directly init streams, in order to force user to accept use of media sources at a time we choose
+            @com.sinch.client.jso.CallClient::execute(*)(func);
+        };
+        this.initStream.then(handler);
     }-*/;
-    public final native void addEventListener(CallListenersObject callListeners) /*-{
-        this.addEventListener(callListeners);
+    public final native Call callPhoneNumber(String phoneNumber) /*-{
+        return this.callPhoneNumber(phoneNumber);
     }-*/;
-    public final native void answer() /*-{
-        this.answer();
-    }-*/;
-    public final native void hangup() /*-{
-        this.hangup();
-    }-*/;
-    public final native JavaScriptObject getIncomingStream() /*-{
-        return this.incomingStream;
-    }-*/;
-    public final native CallDetails getDetails() /*-{
-        return this.getDetails();
-    }-*/;
+
+    protected static void execute(Function function){
+        function.execute();
+    }
+
 }

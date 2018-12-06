@@ -159,5 +159,7 @@ public class GwtSinchClient {
     protected static void callbackFailure(Callback<JavaScriptObject> callback, JavaScriptObject response){
         callback.failure(response);
     }
-
+    public static native String getApplicationKey() /*-{
+        return $wnd.sinchClient.applicationKey;
+    }-*/;
 }
