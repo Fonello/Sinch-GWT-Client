@@ -22,12 +22,9 @@ package com.sinch.client.jso;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-public class AuthTicket extends JavaScriptObject {
-    protected AuthTicket() {}
-    public static native AuthTicket newInstance() /*-{
-        return {};
-    }-*/;
-    public final native void setUserTicket(String userTicket) /*-{
-        this.userTicket = userTicket;
-    }-*/;
+/**
+ * Generic interface to use as callback
+ */
+public interface Function1<T extends JavaScriptObject> {
+    public void execute(T jso);
 }

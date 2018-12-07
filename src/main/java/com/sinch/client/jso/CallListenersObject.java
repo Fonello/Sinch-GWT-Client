@@ -37,4 +37,29 @@ public class CallListenersObject extends JavaScriptObject {
     public final native void setOnCallEnded(JsFunction onCallEnded) /*-{
         this.onCallEnded = onCallEnded;
     }-*/;
+
+    // Legacy
+    public final native void setOnCallProgressing(Function1<Call> callback) /*-{
+        var handler = function (call) {
+            @com.sinch.client.jso.CallListenersObject::callback(*)(callback, call)
+        };
+        this.onCallProgressing = handler;
+    }-*/;
+    public final native void setOnCallEstablished(Function1<Call> callback) /*-{
+        var handler = function (call) {
+            @com.sinch.client.jso.CallListenersObject::callback(*)(callback, call)
+        };
+        this.onCallEstablished = handler;
+    }-*/;
+    public final native void setOnCallEnded(Function1<Call> callback) /*-{
+        var handler = function (call) {
+            @com.sinch.client.jso.CallListenersObject::callback(*)(callback, call)
+        };
+        this.onCallEnded = handler;
+    }-*/;
+
+    protected static void callback(Function1<Call> callback, Call call){
+        callback.execute(call);
+    }
+
 }

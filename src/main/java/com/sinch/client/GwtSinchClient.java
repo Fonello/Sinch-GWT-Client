@@ -60,6 +60,15 @@ public class GwtSinchClient {
             startActiveConnection: startActiveConnection //NOTE: This is only required if application is to receive calls / instant messages.
         });
     }-*/;
+    public static native void start(AuthTicket authTicket, Callback<JavaScriptObject> callback) /*-{
+        var handleFailure = function(error) {
+            @com.sinch.client.GwtSinchClient::callbackFailure(*)(callback, error);
+        }
+        var handleSuccess = function(success) {
+            @com.sinch.client.GwtSinchClient::callbackSuccess(*)(callback, success);
+        }
+        $wnd.sinchClient.start(authTicket, handleSuccess, handleFailure);
+    }-*/;
     public static native void start(SessionObject sessionObject, JsFunction handleSuccess, JsFunction handleFailure) /*-{
         $wnd.sinchClient.start(sessionObject, handleSuccess, handleFailure);
     }-*/;
@@ -98,6 +107,7 @@ public class GwtSinchClient {
         var handleSuccess = function(success) {
             @com.sinch.client.GwtSinchClient::callbackSuccess(*)(callback, success);
         }
+        $wnd.alert("-----------------------------------------------")
         $wnd.sinchClient.start(authTicket, handleSuccess, handleFailure);
     }-*/;
     public static native void newUser(JavaScriptObject signUpObj, Callback<JavaScriptObject> callback) /*-{
@@ -156,7 +166,7 @@ public class GwtSinchClient {
      * @param response
      */
     @SuppressWarnings("unused")
-    protected static void callbackFailure(Callback<JavaScriptObject> callback, JavaScriptObject response){
+    protected static void callbackFailure(Callback<JavaScriptObject> callback, SinchError response){
         callback.failure(response);
     }
     public static native String getApplicationKey() /*-{

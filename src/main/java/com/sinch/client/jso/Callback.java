@@ -4,5 +4,5 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public interface Callback<T> {
     void success(T jso);
-    void failure(T jso);
+    void failure(SinchError error);
 }

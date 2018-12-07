@@ -25,6 +25,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.Window;
 import com.sinch.client.jso.*;
 
+
 public class GwtTestGwtSinchClient extends GWTTestCase {
 
     private static final int DELAY_TIMEOUT = 10000;
@@ -91,7 +92,7 @@ public class GwtTestGwtSinchClient extends GWTTestCase {
                 finishTest();
             }
             @Override
-            public void failure(JavaScriptObject jso) {
+            public void failure(SinchError jso) {
                 fail();
             }
         });
@@ -132,10 +133,44 @@ public class GwtTestGwtSinchClient extends GWTTestCase {
                 finishTest();
             }
             @Override
-            public void failure(JavaScriptObject jso) {
+            public void failure(SinchError jso) {
                 fail();
             }
         });
 
+    }
+
+
+    public void testAuthTicket() {
+        delayTestFinish(DELAY_TIMEOUT);
+        GwtSinchClient.load();
+        if(GwtSinchClient.isLoaded()) {
+
+        }
+        Capabilities capabilities = Capabilities.newInstance();
+        capabilities.setCalling(true);
+        capabilities.setMessaging(false);
+        GwtSinchClient.init(
+                APPLICATION_KEY,
+                capabilities,
+                false,
+                false,
+                null);
+        String ticket = "";
+        AuthTicket authTicketJso = AuthTicket.newInstance();
+        authTicketJso.setUserTicket(ticket);
+        GwtSinchClient.start(authTicketJso,
+                new Callback<JavaScriptObject>() {
+                    @Override
+                    public void success(JavaScriptObject javaScriptObject) {
+                        Window.alert("Success");
+                        finishTest();
+                    }
+                    @Override
+                    public void failure(SinchError error) {
+                        Window.alert("Login error " + GwtSinchClient.stringify(error));
+                        fail();
+                    }
+                });
     }
 }
