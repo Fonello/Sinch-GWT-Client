@@ -14,6 +14,12 @@ public class Call extends JavaScriptObject {
     public final native void hangup() /*-{
         this.hangup();
     }-*/;
+    public final native void mute() /*-{
+        this.mute();
+    }-*/;
+    public final native void unmute() /*-{
+        this.unmute();
+    }-*/;
     public final native JavaScriptObject getIncomingStream() /*-{
         return this.incomingStream;
     }-*/;
